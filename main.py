@@ -8,7 +8,7 @@ from sistemaOuvidoria import *
 opcao = 0
 reclamacoes = []
 
-conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
+conexao = abrirBancoDados('localhost','root','senha','ouvidoria')
 
 while opcao != 5:
     opcao = menu()

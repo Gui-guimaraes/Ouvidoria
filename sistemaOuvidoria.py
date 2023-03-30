@@ -20,7 +20,7 @@ def menu():
 
 # Obter dados do usuário
 def obterDados():
-    conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
+    conexao = abrirBancoDados('localhost','root','senha','ouvidoria')
     nome = input("Digite seu nome: ")
     assunto = input("Digite o assunto da reclamação: ")
     mensagem = input("Digite a mensagem da reclamação: ")
@@ -33,7 +33,7 @@ def obterDados():
 
 # Pesquisar reclamação por código
 def pesquisarCodigo(reclamacoes):
-        conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
+        conexao = abrirBancoDados('localhost','root','senha','ouvidoria')
         listarReclamacoes(reclamacoes)
         print('Pesquisar reclamação por código')
         print()
@@ -71,7 +71,7 @@ def autenticar(self, login, senha):
 # Listar reclamações 
 
 def listarReclamacoes(reclamacoes):
-    conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
+    conexao = abrirBancoDados('localhost','root','senha','ouvidoria')
     # Listar reclamações
     consultarListagem = 'select * from sistema_ouvidoria'
     listaReclamacao = listarBancoDados(conexao, consultarListagem)
@@ -92,7 +92,7 @@ def listarReclamacoes(reclamacoes):
 # Remover reclamações e dados do usuário
 
 def removerReclamacoes():
-    conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
+    conexao = abrirBancoDados('localhost','root','senha','ouvidoria')
     codigo = input('Digite o código da reclamação a ser removida: ')
     remover_reclamacao = 'delete from sistema_ouvidoria where codigo_reclamacao = %s'
     dados = (codigo,)
