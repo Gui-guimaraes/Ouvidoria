@@ -1,20 +1,17 @@
+'''
+Grupo: Guilherme Guimarães, Jonathan Ferreira, Carlos Eduardo, Massimiliano Ribeiro, Gustavo Nóbrega de Carvalho, Riquelme Alves Trajano
+'''
+
 from operacoesbd import *
 from sistemaOuvidoria import *
 
 opcao = 0
 reclamacoes = []
 
-conexao = abrirBancoDados('localhost','root','password','ouvidoria')
+conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
 
 while opcao != 5:
-    print('Ola! seja bem-vindo a ouvidoria')
-    print('1 - Registrar reclamação')
-    print('2 - Listar reclamações')
-    print('3 - Pesquisar reclamação por código')
-    print('4 - Remover reclamação')
-    print('5 - Sair')
-    opcao = int(input('Digite a opção desejada: '))
-
+    opcao = menu()
     if opcao == 1:
         # Registrar reclamação
         reclamacaoNova = obterDados()
@@ -24,40 +21,12 @@ while opcao != 5:
         print()
     elif opcao == 2:
         # Listar reclamacöes
-        consultarListagem = 'select * from sistema_ouvidoria'
-        listaReclamacao = listarBancoDados(conexao, consultarListagem)
-        if len(listaReclamacao) == 0:
-            print('Não há reclamações registradas')
-        else:
-            print()
-            print('Listando reclamações...')
-            for reclamacao in listaReclamacao:
-                print('Código: ', reclamacao[0])
-                print('Nome: ', reclamacao[1])
-                print('Email: ', reclamacao[2])
-                print('Assunto: ', reclamacao[3])
-                print('Mensagem: ', reclamacao[4])
-                print()
+        listar = listarReclamacoes(reclamacoes)
     elif opcao == 3:
         # pesquisar reclamação por código
         print()
-        print('Pesquisar reclamação por código')
-        codigo = (input('Digite o código da reclamação a ser pesquisado: '))
-        consultarListagem = 'select * from sistema_ouvidoria where codigo_reclamacao = ' + codigo
-        listaReclamacao = listarBancoDados(conexao, consultarListagem)
-
-        if len(listaReclamacao) == 0:
-            print('Não há reclamações registradas')
-        else:
-            print()
-            print('Listando reclamações...')
-            for reclamacao in listaReclamacao:
-                print('Código: ', reclamacao[0])
-                print('Nome: ', reclamacao[1])
-                print('Email: ', reclamacao[2])
-                print('Assunto: ', reclamacao[3])
-                print('Mensagem: ', reclamacao[4])
-                print()
+        pesquisar = pesquisarCodigo(reclamacoes)
+        print()
     elif opcao == 4:
         # Remover reclamação
         # Autenticação do admin
@@ -75,9 +44,10 @@ while opcao != 5:
                 print()
                 # Remover reclamação
                 print('listas de reclamações:')
-                listar = listarReclamacoes()
+                listar = listarReclamacoes(reclamacoes)
                 remover = removerReclamacoes()
                 print('Reclamação removida com sucesso!')
+                print()
 
     elif opcao == 5:
         # Sair

@@ -2,27 +2,55 @@ from operacoesbd import *
 # Sistema de ouvidoria
 
 class Reclamacao:
-    def __init__(self, nome, email, assunto, mensagem):
+    def __init__(self, nome, assunto, mensagem):
         self.nome = nome
-        self.email = email
         self.assunto = assunto
         self.mensagem = mensagem
 
+# Menu de opções
+def menu():
+    print('Ola! seja bem-vindo a ouvidoria')
+    print('1 - Registrar reclamação')
+    print('2 - Listar reclamações')
+    print('3 - Pesquisar reclamação por código')
+    print('4 - Remover reclamação')
+    print('5 - Sair')
+    opcao = int(input('Digite a opção desejada: ')) 
+    return opcao
 
+# Obter dados do usuário
 def obterDados():
-    conexao = abrirBancoDados('localhost','root','password','ouvidoria')
-
+    conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
     nome = input("Digite seu nome: ")
-    email = input("Digite seu email: ")
     assunto = input("Digite o assunto da reclamação: ")
     mensagem = input("Digite a mensagem da reclamação: ")
-    inserirReclamacao = 'insert into sistema_ouvidoria (nome, email, assunto, mensagem) values (%s, %s, %s, %s)'
-    dados = (nome, email, assunto, mensagem)
+    inserirReclamacao = 'insert into sistema_ouvidoria (nome, assunto, mensagem) values (%s, %s, %s)'
+    dados = (nome, assunto, mensagem)
     insertNoBancoDados(conexao, inserirReclamacao, dados)
-    return Reclamacao(nome, email, assunto, mensagem)
+    return Reclamacao(nome, assunto, mensagem)
 
     encerrarBancoDados(conexao)
- 
+
+# Pesquisar reclamação por código
+def pesquisarCodigo(reclamacoes):
+        conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
+        listarReclamacoes(reclamacoes)
+        print('Pesquisar reclamação por código')
+        print()
+        codigo = input('Digite o código da reclamação a ser pesquisada: ')
+        consultarReclamacao = 'select nome, assunto, mensagem from sistema_ouvidoria where codigo_reclamacao = ' + codigo
+        pesquisarReclamacao = listarBancoDados(conexao, consultarReclamacao)
+        if len(pesquisarReclamacao) == 0:
+            print('Não há reclamações registradas')
+        else:
+            print()
+            print('Pesquisando reclamação...')
+            for reclamacao in pesquisarReclamacao:
+                print('Nome: ', reclamacao[0])
+                print('Assunto: ', reclamacao[1])
+                print('Mensagem: ', reclamacao[2])
+        encerrarBancoDados(conexao)
+
 # Sistema de admin
 
 class Admin:
@@ -40,41 +68,35 @@ def autenticar(self, login, senha):
 
 # Funções do Admin
 
-# Listar reclamações e/ou dados do usuário
+# Listar reclamações 
 
-def listarReclamacoes():
-    conexao = abrirBancoDados('localhost','root','password','ouvidoria')
+def listarReclamacoes(reclamacoes):
+    conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
     # Listar reclamações
     consultarListagem = 'select * from sistema_ouvidoria'
     listaReclamacao = listarBancoDados(conexao, consultarListagem)
-    for reclamacao in listaReclamacao:
-        print('Código: ', reclamacao[0])
-        print('Nome: ', reclamacao[1])
-        print('Email: ', reclamacao[2])
-        print('Assunto: ', reclamacao[3])
-        print('Mensagem: ', reclamacao[4])
+    if len(listaReclamacao) == 0:
+        print('Não há reclamações registradas')
+    else:
         print()
+        print('Listando reclamações...')
+        for reclamacao in listaReclamacao:
+            print('Código: ', reclamacao[0])
+            print('Nome: ', reclamacao[1])
+            print('Assunto: ', reclamacao[3])
+            print('Mensagem: ', reclamacao[4])
+            print()
     encerrarBancoDados(conexao)
  
-# Atualizar reclamações ou dados do usuário
 
-def atualizarReclamacoes():
-    conexao = abrirBancoDados('localhost','root','password','ouvidoria')
-    codigo = input("Digite o código da reclamação a ser atualizada: ")
-    nome = input("Digite seu nome: ")
-    email = input("Digite seu email: ")
-    assunto = input("Digite o assunto da reclamação: ")
-    mensagem = input("Digite a mensagem da reclamação: ")
-    atualizarReclamacao = 'update sistema_ouvidoria set nome = %s, email = %s, assunto = %s, mensagem = %s where codigo_reclamacao = %s'
-    dados = (nome, email, assunto, mensagem, codigo)
-    updateNoBancoDados(conexao, atualizarReclamacao, dados)
-    encerrarBancoDados(conexao)
 # Remover reclamações e dados do usuário
 
 def removerReclamacoes():
-    conexao = abrirBancoDados('localhost','root','password','ouvidoria')
+    conexao = abrirBancoDados('localhost','root','Eacpncdmn3@2','ouvidoria')
     codigo = input('Digite o código da reclamação a ser removida: ')
     remover_reclamacao = 'delete from sistema_ouvidoria where codigo_reclamacao = %s'
     dados = (codigo,)
     excluirBancoDados(conexao, remover_reclamacao, dados)
     encerrarBancoDados(conexao)
+
+
